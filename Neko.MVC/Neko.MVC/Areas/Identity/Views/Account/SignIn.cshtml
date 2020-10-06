@@ -1,0 +1,55 @@
+﻿@model Neko.App.Models.Identity.SignInUserInfo
+
+@{
+    ViewBag.Title = "登录";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="card bg-transparent ml-auto text-white" style="margin-top:22%;">
+            <div class="card-header">
+                <h3 class="card-title text-center">登录系统</h3>
+                <blockquote class="blockquote mb-0">
+                <h5 class="card-subtitle text-info text-center">你惨了，登陆完就要考试了。</h5>
+                    <footer class="blockquote-footer">
+                        <small class="text-muted text-right">
+                            当然，如果你<cite>不是来考试</cite>的话，当我没说。
+                        </small>
+                    </footer>
+                </blockquote>
+            </div>
+            <div class="card-body bg-card">
+                <form asp-action="SignIn">
+                    <div asp-validation-summary="All" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="CreditId" class="control-label"></label>
+                        <input id="account" asp-for="CreditId" class="form-control" />
+                        <span asp-validation-for="CreditId" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="PasswordHash" class="control-label"></label>
+                        <input id="password" asp-for="PasswordHash" class="form-control" />
+                        <span asp-validation-for="PasswordHash" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <div class="custom-checkbox">
+                            <label>
+                                <input id="rememberMe" type="checkbox" asp-for="RememberMe" />7天内记住我
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <a class="nav-item text-white" asp-area="">忘记密码?</a>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="登录" class="btn btn-primary btn-block" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

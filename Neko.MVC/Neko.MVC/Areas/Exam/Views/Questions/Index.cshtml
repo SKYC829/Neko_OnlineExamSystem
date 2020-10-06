@@ -1,0 +1,84 @@
+﻿@model IEnumerable<Neko.App.Models.Exam.QuestionInfo>
+
+@{
+    ViewData["Title"] = "题目列表";
+}
+
+<div class="alert alert-info" role="alert">
+    <h4 class="alert-heading">题目列表</h4>
+    <p>你可以在这里准备考卷的题目</p>
+    <hr />
+</div>
+
+<p>
+    <a id="CreateQuestion" class="btn btn-primary" data-toggle="modal" data-target="#ConfirmQuestionType">新建题目</a>
+</p>
+<table class="table text-center">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.QuestionType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.QuestionScore)
+            </th>
+            <th>操作</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td class="autoEllipsi">
+                    <span title="@item.Name">
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </span>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.QuestionType)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.QuestionScore)
+                </td>
+                <td>
+                    @Html.ActionLink("编辑", "Edit", new { id = item.Id }) |
+                    @Html.ActionLink("删除", "Delete", new { id = item.Id }, new { @class = "remove", data_id = item.Id, data_url = "/Exam/Questions/Delete", data_fallback = "/Exam/Questions/Index" })
+                </td>
+            </tr>
+        }
+    </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="5">
+                <div>
+                    @Html.Raw(PageSizeHelper.Page("Exam", "Questions", "Index", ViewBag.TotalPages, ViewBag.PageIndex, ViewBag.TotalPage))
+                </div>
+            </td>
+        </tr>
+    </tfoot>
+</table>
+<!--创建问题前先弹出模态框选择问题类型-->
+@{await Html.RenderPartialAsync("_ParticalCreateQuestionConfirm");
+}
+@section Scripts{
+    <script src="~/js/deleteConfirm.js"></script>
+    <script src="~/js/modal.js"></script>
+    <script>
+        (function () {
+            $('#CreateQuestion').click(function () {
+                var modalId = $(this).data('target');
+                console.log(modalId);
+                $(modalId).modal('show');
+            });
+        });
+    </script>
+}

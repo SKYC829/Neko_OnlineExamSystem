@@ -1,0 +1,122 @@
+﻿@model IEnumerable<Neko.App.Models.Exam.ExamPaperInfo>
+
+@{
+    ViewData["Title"] = "考卷列表";
+}
+
+<div class="alert alert-info" role="alert">
+    <h4 class="alert-heading">考卷列表</h4>
+    <p>你可以在这里给学生准备考试的试卷</p>
+    <hr />
+</div>
+
+<p>
+    <a class="btn btn-primary" asp-area="Exam" asp-controller="ExamPapers" asp-action="Create">新建考卷</a>
+</p>
+<table class="table text-center">
+    <thead>
+        <tr>
+            <th hidden>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                <div class="text-wrap">
+                    @Html.DisplayNameFor(model => model.ExamMinute)
+                </div>
+            </th>
+            <th>
+                <div class="text-wrap d-none d-lg-block">
+                    @Html.DisplayNameFor(model => model.ExamScore)
+                </div>
+            </th>
+            <th>
+                <div class="text-wrap d-none d-lg-block">
+                    @Html.DisplayNameFor(model => model.QuestionRank)
+                </div>
+            </th>
+            <th>
+                <div class="d-none d-lg-block">
+                    @Html.DisplayNameFor(model => model.ExamDateFrom)
+                </div>
+            </th>
+            <th>
+                <div class="d-none d-lg-block">
+                    @Html.DisplayNameFor(model => model.ExamDateTo)
+                </div>
+            </th>
+            <th>
+                <div class="d-none d-lg-block">
+                    @Html.DisplayNameFor(model => model.Remark)
+                </div>
+            </th>
+            <th text-wrap>操作</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td hidden>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td class="autoEllipsi">
+                    <span title="@item.Name">
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </span>
+                </td>
+                <td>
+                    <div class="text-wrap">
+                        @Html.DisplayFor(modelItem => item.ExamMinute)
+                    </div>
+                </td>
+                <td>
+                    <div class="d-none d-lg-block">
+                        @Html.DisplayFor(modelItem => item.ExamScore)
+                    </div>
+                </td>
+                <td>
+                    <div class="d-none d-lg-block">
+                        @Html.DisplayFor(modelItem => item.QuestionRank)
+                    </div>
+                </td>
+                <td>
+                    <div class="d-none d-lg-block">
+                        @Html.DisplayFor(modelItem => item.ExamDateFrom)
+                    </div>
+                </td>
+                <td>
+                    <div class="d-none d-lg-block">
+                        @Html.DisplayFor(modelItem => item.ExamDateTo)
+                    </div>
+                </td>
+                <td>
+                    <div class="d-none d-lg-block">
+                        @Html.DisplayFor(modelItem => item.Remark)
+                    </div>
+                    @*<span title="@item.Remark">
+                    </span>*@
+                </td>
+                <td text-wrap>
+                    @Html.ActionLink("编辑", "Edit", new { id = item.Id }) |
+                    @Html.ActionLink("删除", "Delete", new { id = item.Id }, new { @class = "remove", data_id = item.Id, data_url = "/Exam/ExamPapers/Delete", data_fallback = "/Exam/ExamPapers/Index" })
+                </td>
+            </tr>
+        }
+    </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="9">
+                <div>
+                    @Html.Raw(PageSizeHelper.Page("Exam", "ExamPaper", "Index", ViewBag.TotalPages, ViewBag.PageIndex, ViewBag.TotalPage))
+                </div>
+            </td>
+        </tr>
+    </tfoot>
+</table>
+
+@section Scripts{
+    <script src="~/js/deleteConfirm.js"></script>
+}

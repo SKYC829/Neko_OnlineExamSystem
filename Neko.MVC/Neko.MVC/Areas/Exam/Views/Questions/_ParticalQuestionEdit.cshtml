@@ -1,0 +1,39 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model Neko.App.Models.Exam.CreateQuestionInfo
+@{
+}
+
+<div class="form-group">
+    <label asp-for="Name" class="control-label"></label>
+    <input asp-for="Name" class="form-control" />
+    <span asp-validation-for="Name" class="text-danger"></span>
+</div>
+<div class="form-group">
+    <label asp-for="QuestionType" class="control-label"></label>
+    @*<input asp-for="QuestionType" class="form-control" />*@
+    <select class="form-control" asp-items="@Html.GetEnumSelectList(typeof(Neko.App.Models.Exam.QuestionType))" asp-for="QuestionType" disabled></select>
+    <input class="form-control" type="text" hidden asp-for="QuestionTypeInt" />
+    <span asp-validation-for="QuestionType" class="text-danger"></span>
+</div>
+<div class="form-group">
+    <label asp-for="QuestionScore" class="control-label"></label>
+    <input asp-for="QuestionScore" class="form-control" />
+    <span asp-validation-for="QuestionScore" class="text-danger"></span>
+</div>
+<!--答案模块-->
+<div class="form-group">
+    @{
+        switch ((Neko.App.Models.Exam.QuestionType)ViewBag.QuestionType)
+        {
+            case Neko.App.Models.Exam.QuestionType.Radio:
+            case Neko.App.Models.Exam.QuestionType.Multiple:
+                await Html.RenderPartialAsync("_ParticalAddSolution_Radio", Model);
+                break;
+            default:
+                Html.Raw("数据异常，请刷新页面或重新进入");
+                break;
+        }
+    }
+</div>

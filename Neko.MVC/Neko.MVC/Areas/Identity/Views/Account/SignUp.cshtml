@@ -1,0 +1,23 @@
+﻿@model Neko.App.Models.Identity.SignUpUserInfo
+@using Neko.App.Models.Identity
+@{
+    ViewData["Title"] = "新建用户";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="alert alert-info" role="alert">
+    <h4 class="alert-heading">新建用户</h4>
+    <p>你可以在新建一个可爱的用户</p>
+</div>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-area="Identity" asp-controller="Account" asp-action="SignUp">
+            @Html.Partial("_UserEditPartical",Model)
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

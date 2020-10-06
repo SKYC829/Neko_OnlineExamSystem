@@ -1,0 +1,43 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@using Neko.App.Models.Exam;
+@model IEnumerable<ExamQuestionRecordInfo>
+<div>
+    @for (int i = 0; i < Model.Count(); i++)
+    {
+        ExamQuestionRecordInfo item = Model.ElementAt(i);
+        <table class="table">
+            <thead>
+                <tr>
+                    <td colspan="3">题目名称:@Html.DisplayFor(mq => item.Question.Name)</td>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int qi = 0; qi < item.Question.Solutions.Count(); qi++)
+                {
+                    SolutionInfo sItem = item.Question.Solutions.ElementAt(qi);
+                    <tr>
+                        <td>答案:@Html.DisplayFor(ms => sItem.Name)</td>
+                        <td>
+                            @if (sItem.IsCorrect)
+                            {
+                                @Html.Raw("√正确答案")
+
+                            }
+                        </td>
+                        <td>
+                            @{
+                                var sRItem = item.SolutionRecords.FirstOrDefault(p => p.SolutionId.Equals(sItem.Id));
+                                if (sRItem != null)
+                                {
+                                    @Html.Raw("○你选的答案")
+                                }
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>

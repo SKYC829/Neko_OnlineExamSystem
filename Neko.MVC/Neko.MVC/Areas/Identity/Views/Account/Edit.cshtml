@@ -1,0 +1,22 @@
+﻿@model Neko.App.Models.Identity.UserInfo
+
+@{
+    ViewData["Title"] = string.Format("编辑用户 - {0}",Model.UserName);
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="alert alert-info" role="alert">
+    <h4 class="alert-heading">编辑用户</h4>
+    <p>你可以在这里修改 @Model.UserName 的属性</p>
+</div>
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            @Html.Partial("_UserEditPartical", Model)
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

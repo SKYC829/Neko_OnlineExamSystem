@@ -1,0 +1,88 @@
+﻿<!DOCTYPE html>
+
+<html lang="zh-hans">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width , initial-scale=1, shrink-to-fit=no" />
+    <title>@ViewBag.Title - 在线考试系统</title>
+    <link rel="stylesheet" href="~/css/mysite.css" />
+    <link rel="stylesheet" href="~/lib/font-awesome/css/font-awesome.css" />
+    <!--<environment include="Development">-->
+    <!--开发环境的引用-->
+    <!--<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+    </environment>
+    <environment exclude="Development">-->
+    <!--发布环境的引用-->
+    <!--</environment>-->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<body>
+    <div class="container-fluid">
+        <nav class="navbar navbar-expand-md navbar-light bg-light">
+            <a class="navbar-brand" asp-area="Exam" asp-controller="Home" asp-action="Index">
+                <img src="~/images/考试记录.png" width="30" height="30" class="d-inline-block align-top" />
+                在线考试系统
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#MyNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="MyNav">
+                @if (ViewBag.Neko_Asp_User != null)
+                {
+                    <ul class="navbar-nav">
+                        @foreach (Neko.App.Models.Identity.MenuInfo menu in ViewBag.Neko_Asp_User.Role.RoleMenus)
+                        {
+                            <li class="nav-item justify-content-start dropdown">
+                                @Html.ActionLink(menu.MenuName, menu.Action, controllerName: menu.Controller, new { }, new { @class = "nav-link dropdown-toggle", data_toggle = "dropdown" })
+                                <div class="dropdown-menu">
+                                    @foreach (Neko.App.Models.Identity.MenuInfo subMenu in menu.SubMenus)
+                                    {
+                                        if (string.IsNullOrEmpty(subMenu.Controller) || string.IsNullOrEmpty(subMenu.Action))
+                                        {
+                                            <a class="dropdown-item disabled">@subMenu.MenuName</a>
+                                        }
+                                        else
+                                        {
+                                            if (string.IsNullOrEmpty(subMenu.Area))
+                                            {
+                                                <a class="dropdown-item" href="/@subMenu.Controller/@subMenu.Action">@subMenu.MenuName</a>
+                                            }
+                                            else
+                                            {
+                                                <a class="dropdown-item" href="/@subMenu.Area/@subMenu.Controller/@subMenu.Action">@subMenu.MenuName</a>
+                                            }
+                                        }
+                                    }
+                                </div>
+                            </li>
+                        }
+                    </ul>
+                    <a class="nav-link ml-auto" asp-area="Identity" asp-controller="Account" asp-action="SignOut">@ViewBag.Neko_Asp_User.UserName</a>
+                }
+                else
+                {
+                    <a class="nav-link ml-auto" asp-area="Identity" asp-controller="Account" asp-action="SignIn">请先登录</a>
+                }
+            </div>
+
+        </nav>
+        <div class="dropdown-divider"></div>
+        <div>
+            @RenderBody()
+        </div>
+    </div>
+        <script src="~/lib/jquery/dist/jquery.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+    <!--<environment include="Development">
+        <!--开发环境的引用-->
+        <!--@*<script src="~/lib/popper.js/cjs/popper.js"></script>*@
+    </environment>
+    <environment exclude="Development">-->
+        <!--发布环境的引用-->
+        <!--<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    </environment>-->
+    <script src="~/js/mysite.js"></script>
+    @RenderSection("Scripts", false)
+</body>
+</html>

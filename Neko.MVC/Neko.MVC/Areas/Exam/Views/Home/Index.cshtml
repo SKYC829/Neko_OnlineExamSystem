@@ -1,0 +1,82 @@
+﻿@model IEnumerable<Neko.App.Models.Exam.ExamPaperInfo>
+
+@{
+    ViewData["Title"] = "试卷列表";
+}
+
+<div class="alert alert-info" role="alert">
+    <h4 class="alert-heading">试卷列表</h4>
+    <p>这里是你所有要考试的试卷</p>
+    <p>如果下面的表格里没有考试的话，那你就要确认一下是不是错过了考试时间哦 &nbsp;<span class="badge badge-danger">危</span></p>
+    <hr />
+</div>
+<table class="table text-center">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ExamMinute)
+            </th>
+            <th>
+                满分
+            </th>
+            <th>
+                考试状态
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ExamMinute)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ExamScore)
+                </td>
+                <td>
+                    <span title="考试时间 @item.ExamDateFrom.ToString("F") 至 @item.ExamDateTo.ToString("F")">
+                        @if (item.ExamDateFrom <= DateTime.Now && DateTime.Now < item.ExamDateTo)
+                        {
+                            <label>正在考试</label>
+                        }
+                        else if (item.ExamDateTo <= DateTime.Now)
+                        {
+                            <label>考试结束</label>
+                        }
+                        else
+                        {
+                            <label>尚未开考</label>
+                        }
+                    </span>
+                </td>
+                <td>
+                    @Html.ActionLink("开始考试", "Exam", new { paperId = item.Id}, new { name = "startExam", data_from = item.ExamDateFrom, data_to = item.ExamDateTo })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $('tbody').find('a[name="startExam"]').each(function (index, item) {
+                var from = new Date($(item).data('from'));
+                var to = new Date($(item).data('to'));
+                var valFrom = from < GetDateTime();
+                var valTo = to <= GetDateTime();
+                if (valTo) {
+                    $(item).removeAttr('href');
+                    $(item).addClass('text-muted');
+                }
+            });
+        });
+    </script>
+}

@@ -1,0 +1,60 @@
+﻿@model Neko.App.Models.Exam.EditExamPaperInfo
+@using Neko.App.Models.Exam;
+
+<p>
+    <h4>题目设置</h4>
+    <hr />
+</p>
+<p>
+    <a class="btn btn-primary" id="btnAddQuestion" data-toggle="modal" data-target="#ImportQuestion">添加题目</a>
+</p>
+<table class="table text-center">
+    <thead class="thead-light">
+        <tr>
+            <th hidden>ID</th>
+            <th>题目</th>
+            <th>分值</th>
+            <th class="w-25">操作</th>
+        </tr>
+    </thead>
+    <tr id="copyed" hidden>
+        <td hidden>
+            <input asp-for="QuestionIds" type="text" readonly class="form-control"/>
+        </td>
+        <td>
+            <label id="lbName" class="control-label"></label>
+        </td>
+        <td>
+            <label id="lbScore" class="control-label"></label>
+        </td>
+        <td>
+            <a class="btn btn-danger remove">删除</a>
+        </td>
+    </tr>
+    <tbody id="pasted">
+        @if (Model != null && Model.QuestionIds != null && Model.QuestionIds.Count > 0)
+        {
+            foreach (var question in Model.Questions)
+            {
+                <tr>
+                    <td hidden>
+                        <input asp-for="QuestionIds" type="text" readonly class="form-control" value="@question.Id" />
+                    </td>
+                    <td>
+                        @*@question.Name*@
+                        <label id="lbName" class="control-label">@question.Name</label>
+                    </td>
+                    <td>
+                        <label id="lbScore" class="control-label">@question.QuestionScore</label>
+                    </td>
+                    <td>
+                        <a class="btn btn-danger text-white remove">删除</a>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+@{
+    await Html.RenderPartialAsync("_ParticalImportQuestion");
+}

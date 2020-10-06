@@ -1,0 +1,98 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model Neko.App.Models.Exam.ExamPaperInfo
+@{
+    ViewData["Title"] = string.Format("{0} - {1} - 正在考试", ViewBag.Neko_Asp_User.UserName, Model.Name);
+    Layout = "_ExamLayout";
+}
+
+<!--顶部浮动部分，计时器，退出等-->
+<div>
+    <div class="d-flex flex-row justify-content-center">
+        <div class="p-2">
+            @Html.DisplayFor(p => p.Name)
+        </div>
+        <div class="p-2 form-row">
+            <label class="form-inline">剩余时间:</label>
+            @Html.Label(expression: string.Format("{0}:00", Model.ExamMinute), htmlAttributes: new { name = "countDown" }, labelText: null)
+            <label class="form-inline">分钟</label>
+        </div>
+        <div class="p-2">
+            @Html.ActionLink("交卷离开", null, new { }, new { name = "btnjiaojuan", @class = "finish text-warning" })|
+            @Html.ActionLink("离开考试", "Index", new { }, new { @class = "text-danger", name = "btnlikai" })
+        </div>
+    </div>
+</div>
+<div class="border m-3">
+    <form class="p-2" asp-area="Exam" asp-controller="Home" asp-action="Finish">
+        @{ await Html.RenderPartialAsync("_ParticalAnswerArea", Model);}
+        <div class="form-group">
+            <input class="btn btn-warning pull-right finish" type="button" value="交卷离开" />
+        </div>
+    </form>
+</div>
+
+<div class="modal fade" id="autoSubModal" role="dialog" data-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">考试时间到！</h5>
+            </div>
+            <div class="modal-body">
+                <h4>考试时间到，请停止作答！</h4>
+                <div class="form-row">
+                    <label class="form-inline h2">系统将在:</label>
+                    <label class="form-inline text-warning h2" name="autoSubCountDown">5</label>
+                    <label class="form-inline h2">秒后自动交卷</label>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="loadingModal" role="dialog" data-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">请稍候..</h5>
+            </div>
+            <div class="modal-body">
+                <h4>正在为您计算得分，请稍候</h4>
+                <div class="progress">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" id="loading"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="finishSubModal" role="dialog" data-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">考试结束！</h5>
+            </div>
+            <div class="modal-body">
+                <h4>考试结束！</h4>
+                <div class="form-row">
+                    <label class="form-inline h5">您的得分为:</label>
+                    <label class="form-inline text-warning h4" name="score">100</label>
+                    <label class="form-inline h5">分！</label>
+                </div>
+                <div class="form-row">
+                    <label class="form-inline h1" name="ispassed"></label>
+                </div>
+                <div class="form-row">
+                    <label class="form-inline h6" name="slogan"></label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-info pull-right" asp-area="Exam" asp-controller="Home" asp-action="Index">好的，我知道了</a>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script src="~/js/exam.js"></script>
+}

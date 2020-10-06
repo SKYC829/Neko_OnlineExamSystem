@@ -1,0 +1,64 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30413.136
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Neko.MVC", "Neko.MVC\Neko.MVC.csproj", "{BBBE8E03-F112-404E-BC19-FF743091BAAF}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Neko.App", "Neko.App\Neko.App.csproj", "{9EFF726F-3832-43CE-8175-AC2ADB06F47B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Neko.Domain", "Neko.Domain\Neko.Domain.csproj", "{0ED1DD02-D23C-490A-9628-74D70FB030FB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Neko.Data", "Neko.Data\Neko.Data.csproj", "{56D6ABF6-CDFA-4587-909A-20DFDE92EB99}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Neko.Unity", "Neko.Unity\Neko.Unity.csproj", "{04B1C123-A22E-4447-A5ED-FCB80B73A31C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "主要前端项目", "主要前端项目", "{677E9D17-B7A5-4D49-AF17-DCB041886412}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "应用", "应用", "{66CDF7A7-FA27-409E-B012-AE94A7188337}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "数据逻辑层", "数据逻辑层", "{9F17BFD9-02BE-4A77-BBF8-4DEE75147ACE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "帮助类，扩展", "帮助类，扩展", "{A7131F8F-D936-485D-BBAE-603170F41265}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BBBE8E03-F112-404E-BC19-FF743091BAAF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BBBE8E03-F112-404E-BC19-FF743091BAAF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BBBE8E03-F112-404E-BC19-FF743091BAAF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BBBE8E03-F112-404E-BC19-FF743091BAAF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9EFF726F-3832-43CE-8175-AC2ADB06F47B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9EFF726F-3832-43CE-8175-AC2ADB06F47B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9EFF726F-3832-43CE-8175-AC2ADB06F47B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9EFF726F-3832-43CE-8175-AC2ADB06F47B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0ED1DD02-D23C-490A-9628-74D70FB030FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0ED1DD02-D23C-490A-9628-74D70FB030FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0ED1DD02-D23C-490A-9628-74D70FB030FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0ED1DD02-D23C-490A-9628-74D70FB030FB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{56D6ABF6-CDFA-4587-909A-20DFDE92EB99}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{56D6ABF6-CDFA-4587-909A-20DFDE92EB99}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{56D6ABF6-CDFA-4587-909A-20DFDE92EB99}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{56D6ABF6-CDFA-4587-909A-20DFDE92EB99}.Release|Any CPU.Build.0 = Release|Any CPU
+		{04B1C123-A22E-4447-A5ED-FCB80B73A31C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{04B1C123-A22E-4447-A5ED-FCB80B73A31C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{04B1C123-A22E-4447-A5ED-FCB80B73A31C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{04B1C123-A22E-4447-A5ED-FCB80B73A31C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{BBBE8E03-F112-404E-BC19-FF743091BAAF} = {677E9D17-B7A5-4D49-AF17-DCB041886412}
+		{9EFF726F-3832-43CE-8175-AC2ADB06F47B} = {66CDF7A7-FA27-409E-B012-AE94A7188337}
+		{0ED1DD02-D23C-490A-9628-74D70FB030FB} = {9F17BFD9-02BE-4A77-BBF8-4DEE75147ACE}
+		{56D6ABF6-CDFA-4587-909A-20DFDE92EB99} = {9F17BFD9-02BE-4A77-BBF8-4DEE75147ACE}
+		{04B1C123-A22E-4447-A5ED-FCB80B73A31C} = {A7131F8F-D936-485D-BBAE-603170F41265}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A2E64ABB-B36C-44EE-AE63-E1EBB67F0A68}
+	EndGlobalSection
+EndGlobal

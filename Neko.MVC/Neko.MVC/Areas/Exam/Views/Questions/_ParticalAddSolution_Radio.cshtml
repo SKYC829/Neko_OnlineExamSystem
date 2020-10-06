@@ -1,0 +1,110 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model Neko.App.Models.Exam.CreateQuestionInfo
+@{
+}
+
+<div class="form-group">
+    <div class="form-row">
+        <label class="control-label col">选择题答案</label>
+        <a id="btnAddSolution" class="btn btn-primary" title="添加一个选项" data-target="#copyed" data-to="#target"><i class="fa fa-plus"></i></a>
+    </div>
+    <div class="mt-2">
+        <ol id="target" type="A">
+            <li id="copyed" hidden class="nav-item mt-2">
+                <div class="form-row">
+                    <div class="col">
+                        <input class="form-control" placeholder="答案" /> <!--id="SolutionNames" name="SolutionNames"-->
+                    </div>
+                    <div class="col">
+                        <input class="form-control" placeholder="分值" /> <!--id="SolutionScore" name="SolutionScore"-->
+                    </div>
+                    <div>
+                        <a id="btnRemoveSolution" class="btn btn-danger pull-right" title="删除此选项" data-target="#copyed"><i class="fa fa-minus"></i></a>
+                    </div>
+                </div>
+            </li>
+            @if (Model != null && Model.SolutionNames != null)
+            {
+                for (int i = 0; i < Model.SolutionNames.Count(); i++)
+                {
+                    string name = Model.SolutionNames.ElementAt(i);
+                    double score = 0;
+                    if (i < Model.SolutionScore.Count())
+                    {
+                        score = Model.SolutionScore.ElementAt(i);
+                    }
+                    <li id="copyed" class="nav-item mt-2">
+                        <div class="form-row">
+                            <div class="col">
+                                <input id="SolutionNames" name="SolutionNames" class="form-control" placeholder="答案" value="@name" /> <!--id="SolutionNames" name="SolutionNames"-->
+                            </div>
+                            <div class="col">
+                                <input id="SolutionScore" name="SolutionScore" class="form-control" placeholder="分值" value="@score" /> <!--id="SolutionScore" name="SolutionScore"-->
+                            </div>
+                            <div>
+                                <a id="btnRemoveSolution" class="btn btn-danger pull-right" title="删除此选项" data-target="#copyed"><i class="fa fa-minus"></i></a>
+                            </div>
+                        </div>
+                    </li>
+                }
+            }
+            else
+            {
+                <li id="copyed" class="nav-item mt-2">
+                    <div class="form-row">
+                        <div class="col">
+                            <input id="SolutionNames" name="SolutionNames" class="form-control" placeholder="答案" /> <!--id="SolutionNames" name="SolutionNames"-->
+                        </div>
+                        <div class="col">
+                            <input id="SolutionScore" name="SolutionScore" class="form-control" placeholder="分值" /> <!--id="SolutionScore" name="SolutionScore"-->
+                        </div>
+                        <div>
+                            <a id="btnRemoveSolution" class="btn btn-danger pull-right" title="删除此选项" data-target="#copyed"><i class="fa fa-minus"></i></a>
+                        </div>
+                    </div>
+                </li>
+                <li id="copyed" class="nav-item mt-2">
+                    <div class="form-row">
+                        <div class="col">
+                            <input id="SolutionNames" name="SolutionNames" class="form-control" placeholder="答案" /> <!--id="SolutionNames" name="SolutionNames"-->
+                        </div>
+                        <div class="col">
+                            <input id="SolutionScore" name="SolutionScore" class="form-control" placeholder="分值" /> <!--id="SolutionScore" name="SolutionScore"-->
+                        </div>
+                        <div>
+                            <a id="btnRemoveSolution" class="btn btn-danger pull-right" title="删除此选项" data-target="#copyed"><i class="fa fa-minus"></i></a>
+                        </div>
+                    </div>
+                </li>
+                <li id="copyed" class="nav-item mt-2">
+                    <div class="form-row">
+                        <div class="col">
+                            <input id="SolutionNames" name="SolutionNames" class="form-control" placeholder="答案" /> <!--id="SolutionNames" name="SolutionNames"-->
+                        </div>
+                        <div class="col">
+                            <input id="SolutionScore" name="SolutionScore" class="form-control" placeholder="分值" /> <!--id="SolutionScore" name="SolutionScore"-->
+                        </div>
+                        <div>
+                            <a id="btnRemoveSolution" class="btn btn-danger pull-right" title="删除此选项" data-target="#copyed"><i class="fa fa-minus"></i></a>
+                        </div>
+                    </div>
+                </li>
+                <li id="copyed" class="nav-item mt-2">
+                    <div class="form-row">
+                        <div class="col">
+                            <input id="SolutionNames" name="SolutionNames" class="form-control" placeholder="答案" /> <!--id="SolutionNames" name="SolutionNames"-->
+                        </div>
+                        <div class="col">
+                            <input id="SolutionScore" name="SolutionScore" class="form-control" placeholder="分值" /> <!--id="SolutionScore" name="SolutionScore"-->
+                        </div>
+                        <div>
+                            <a id="btnRemoveSolution" class="btn btn-danger pull-right" title="删除此选项" data-target="#copyed"><i class="fa fa-minus"></i></a>
+                        </div>
+                    </div>
+                </li>
+            }
+        </ol>
+    </div>
+</div>

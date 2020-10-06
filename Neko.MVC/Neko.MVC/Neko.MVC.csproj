@@ -1,0 +1,56 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+	<PropertyGroup>
+		<TargetFramework>netcoreapp3.1</TargetFramework>
+		<UserSecretsId>057ed499-49aa-4c94-bc48-fbbc7dfb68f6</UserSecretsId>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+	  <DebugType>none</DebugType>
+	  <DebugSymbols>false</DebugSymbols>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Folder Include="Areas\Exam\Data\" />
+		<Folder Include="Areas\Exam\Models\" />
+		<Folder Include="Areas\Identity\Data\" />
+		<Folder Include="Areas\Identity\Models\" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.1.8" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.8" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="3.1.8" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.8">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.4" />
+		<PackageReference Include="MySql.Data.EntityFrameworkCore" Version="8.0.21" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Neko.App\Neko.App.csproj" />
+		<ProjectReference Include="..\Neko.Data\Neko.Data.csproj" />
+		<ProjectReference Include="..\Neko.Unity\Neko.Unity.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Reference Include="ICSharpCode.SharpZipLib">
+			<HintPath>G:\ProjectRelease\Util\Util For Unity\ICSharpCode.SharpZipLib.dll</HintPath>
+			<Private>true</Private>
+		</Reference>
+		<Reference Include="Newtonsoft.Json">
+			<HintPath>G:\ProjectRelease\Util\Util For Unity\Newtonsoft.Json.dll</HintPath>
+			<Private>true</Private>
+		</Reference>
+		<Reference Include="Util">
+		  <HintPath>G:\ProjectRelease\Util\Util For Unity\Util.dll</HintPath>
+		</Reference>
+		<Reference Include="zxing">
+			<HintPath>G:\ProjectRelease\Util\Util For Unity\zxing.dll</HintPath>
+			<Private>true</Private>
+		</Reference>
+	</ItemGroup>
+
+</Project>

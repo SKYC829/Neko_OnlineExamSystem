@@ -1,0 +1,42 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.7" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="3.1.7" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.7">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="MySql.Data.EntityFrameworkCore" Version="8.0.21" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Neko.App\Neko.App.csproj" />
+    <ProjectReference Include="..\Neko.Domain\Neko.Domain.csproj" />
+    <ProjectReference Include="..\Neko.Unity\Neko.Unity.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+	  <Reference Include="ICSharpCode.SharpZipLib">
+		  <HintPath>G:\ProjectRelease\Util\Util For Unity\ICSharpCode.SharpZipLib.dll</HintPath>
+		  <Private>true</Private>
+	  </Reference>
+	  <Reference Include="Newtonsoft.Json">
+		  <HintPath>G:\ProjectRelease\Util\Util For Unity\Newtonsoft.Json.dll</HintPath>
+		  <Private>true</Private>
+	  </Reference>
+	  <Reference Include="Util">
+		  <HintPath>G:\ProjectRelease\Util\Util For Unity\Util.dll</HintPath>
+		  <Private>true</Private>
+	  </Reference>
+	  <Reference Include="zxing">
+		  <HintPath>G:\ProjectRelease\Util\Util For Unity\zxing.dll</HintPath>
+		  <Private>true</Private>
+	  </Reference>
+  </ItemGroup>
+
+</Project>

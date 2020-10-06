@@ -1,0 +1,34 @@
+﻿@model Neko.App.Models.Exam.CreateQuestionInfo
+
+@{
+    ViewData["Title"] = "新建题目";
+}
+
+<div class="alert alert-info" role="alert">
+    <h4 class="alert-heading">新建题目</h4>
+    <p>你可以在这里创建一个新题目</p>
+    <hr />
+</div>
+<div class="row">
+    <div class="col-md-4">
+        <form asp-area="Exam" asp-controller="Questions" asp-action="QuestionCreate">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            @{await Html.RenderPartialAsync("_ParticalQuestionEdit",Model); }
+            <div class="form-group">
+                <input type="submit" value="创建" class="btn btn-primary" />
+                <a class="btn btn-secondary" asp-area="Exam" asp-controller="Questions" asp-action="Index">返回</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="~/js/solutions.js"></script>
+    <script>
+        $(document).ready(function () {
+            console.log($('select[name="QuestionType"]').val());
+            $('input[name="QuestionTypeInt"]').prop('value', $('select[name="QuestionType"]').val());
+        });
+    </script>
+}

@@ -1,0 +1,73 @@
+﻿@model IEnumerable<Neko.App.Models.Exam.ExamRecordInfo>
+
+@{
+    ViewData["Title"] = "考试记录";
+}
+@if ((int)ViewBag.Neko_Asp_User.Role.RoleType <= 2)
+{
+    <div>
+        <form class="form-inline mb-2">
+            <div class="form-group">
+                <label class="mr-2">筛选条件:</label>
+                @Html.DropDownList("userId", ViewBag.Users as SelectList, "答卷人", new { @class = "mr-2 custom-select condition" })
+                @Html.DropDownList("examId", ViewBag.Exams as SelectList, "试卷名称", new { @class = "mr-2 custom-select condition" })
+                <input class="form-control mr-2 condition" type="date" id="fromDate" name="fromDate" value="@ViewBag.FromDate" />
+                <label class="mr-2">至</label>
+                <input class="form-control mr-2 condition" type="date" id="toDate" name="toDate" value="@ViewBag.ToDate" />
+            </div>
+        </form>
+    </div>
+    <p></p>
+}
+<table class="table text-center">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ExamPaper.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ExamScore)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsPassed)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreateUser)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreateDate)
+            </th>
+            <th>操作</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ExamPaper.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ExamScore)
+                </td>
+                <td>
+                    <span title="及格线为总分的60%">
+                        @Html.Raw(string.Format("{0}", item.IsPassed ? "及格" : "不及格"))
+                    </span>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreateUser.UserName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreateDate)
+                </td>
+                <td>
+                    @Html.ActionLink("查看详情", "Details", new { recordId = item.Id })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+@section Scripts{
+    <script src="~/js/examRecord.js"></script>
+}

@@ -1,0 +1,86 @@
+﻿@model IEnumerable<Neko.App.Models.Identity.UserInfo>
+
+@{
+    ViewBag.Title = "用户管理";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="alert alert-info" role="alert">
+    <h4 class="alert-heading">用户管理</h4>
+    <p>你可以在这里管理到所有的用户，例如</p>
+    <hr />
+    <ul>
+        <li>新建用户</li>
+        <li>编辑用户</li>
+        <li>删除用户</li>
+    </ul>
+</div>
+
+<p>
+    <a class="btn btn-primary" asp-area="Identity" asp-controller="Account" asp-action="SignUp">创建用户</a>
+</p>
+<table class="table text-center">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.WorkId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UserName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Password)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Role)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Remark)
+            </th>
+            <th>
+                操作
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.WorkId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserName)
+                </td>
+                <td style=" white-space:nowrap;text-overflow:ellipsis;overflow:hidden;max-width:60px;">
+                    <span title="@item.PasswordHash">
+                        @Html.DisplayFor(modelItem => item.PasswordHash)
+                    </span>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Role.RoleName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Remark)
+                </td>
+                <td>
+                    @Html.ActionLink("编辑", "Edit", new { id = item.WorkId })
+                    @Html.ActionLink("删除", "Delete", new { id = item.WorkId }, new { @class = "remove", data_id = item.WorkId, data_url = "/Account/Delete",data_fallback="/Account/Index" })
+                </td>
+            </tr>
+        }
+    </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="6">
+                <div>
+                    @Html.Raw(PageSizeHelper.Page("Account", "Index", ViewBag.TotalPages, ViewBag.PageIndex, ViewBag.TotalPage))
+                </div>
+            </td>
+        </tr>
+    </tfoot>
+</table>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="~/js/deleteConfirm.js"></script>
+}

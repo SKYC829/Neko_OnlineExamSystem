@@ -1,0 +1,26 @@
+﻿.bg-book {
+    background: url(../images/bg_book.png) no-repeat center 0px;
+    background-size: cover;
+    background-position: center 0;
+    background-repeat: no-repeat;
+}
+
+.bg-card {
+    background: rgba(70, 63, 63, 0.55);
+    overflow: hidden;
+}
+
+.bg-card::before {
+    filter: blur(40px);
+}
+
+.remove {
+    color: #dc3545;
+}
+
+.autoEllipsi {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    max-width: 120px;
+}

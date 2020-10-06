@@ -1,0 +1,40 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model Neko.App.Models.Exam.ExamPaperInfo
+@using Neko.App.Models.Exam;
+
+<div name="formDiv" data-id="@Model.Id">
+    @for (int i = 0; i < Model.Questions.Count; i++)
+    {
+        QuestionInfo question = Model.Questions.ElementAt(i);
+        <div class="border m-2 p-3 qdiv" data-qid="@question.Id">
+            <h4>@string.Format("{0}、{1}", i + 1, question.Name)</h4>
+            <div class="form-group">
+                <ol type="A">
+                    @for (int si = 0; si < question.Solutions.Count(); si++)
+                    {
+                        @switch (question.QuestionType)
+                        {
+                            case QuestionType.Multiple:
+                                <li>
+                                    <label class="form-check-label" for="@string.Format("z{0}_{1}",question.Id,si)">
+                                        <input type="checkbox" id="@string.Format("z{0}_{1}",question.Id,si)" name="@string.Format("[{0}]",question.Id)" class="form-check-inline" data-sid="@question.Solutions.ElementAt(si).Id" data-qid="@question.Id" /> @question.Solutions.ElementAt(si).Name
+                                    </label>
+                                </li>
+                                break;
+                            case QuestionType.Radio:
+                            default:
+                                <li>
+                                    <label class="form-check-label" for="@string.Format("z{0}_{1}",question.Id,si)">
+                                        <input type="radio" id="@string.Format("z{0}_{1}",question.Id,si)" name="@string.Format("[{0}]",question.Id)" class="form-check-inline" data-sid="@question.Solutions.ElementAt(si).Id" data-qid="@question.Id" /> @question.Solutions.ElementAt(si).Name
+                                    </label>
+                                </li>
+                                break;
+                        }
+                    }
+                </ol>
+            </div>
+        </div>
+    }
+</div>

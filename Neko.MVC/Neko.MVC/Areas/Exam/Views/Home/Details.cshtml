@@ -1,0 +1,21 @@
+﻿@model Neko.App.Models.Exam.ExamRecordInfo
+
+@{
+    ViewData["Title"] = "考试详情";
+}
+<div class="alert alert-info" role="alert">
+    <h4 class="alert-heading">考试详情</h4>
+    <p>这是你这次考试的详细信息</p>
+    <ul>
+        <li>试卷名称:@Model.ExamPaper.Name</li>
+        <li>考试分数:@Model.ExamScore @Html.Raw(string.Format("({0})", Model.IsPassed ? "已及格" : "未及格"))</li>
+        <li>考试用时:@Html.Raw(string.Format("{0}小时{1}分{2}秒", (Model.CreateDate - Model.BeginTime).Hours, (Model.CreateDate - Model.BeginTime).Minutes, (Model.CreateDate - Model.BeginTime).Seconds))</li>
+    </ul>
+    <hr />
+</div>
+<div>
+    @{ await Html.RenderPartialAsync("_ParticalRecordQuestionDetail", Model.QuestionRecords);}
+</div>
+<div>
+    <a asp-area="Exam" asp-controller="Home" asp-action="Records" class="btn btn-secondary">返回上一页</a>
+</div>
