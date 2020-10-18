@@ -2,6 +2,7 @@
 
 	<PropertyGroup>
 		<TargetFramework>netcoreapp3.1</TargetFramework>
+		<RazorCompileOnPublish>false</RazorCompileOnPublish>
 		<UserSecretsId>057ed499-49aa-4c94-bc48-fbbc7dfb68f6</UserSecretsId>
 	</PropertyGroup>
 
@@ -19,6 +20,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.1.8" />
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="3.1.8" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.8" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="3.1.8" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.8">
