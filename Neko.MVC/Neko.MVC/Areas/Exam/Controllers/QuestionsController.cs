@@ -12,6 +12,8 @@ using Util.DataObject;
 using System.IO;
 using Util.Threading;
 using Neko.Unity;
+using System.Data;
+using Util.IO;
 
 namespace Neko.MVC.Areas.Exam.Controllers
 {
@@ -42,28 +44,133 @@ namespace Neko.MVC.Areas.Exam.Controllers
             return View();
         }
 
-        [HttpPost,Route("UploadFile"),ValidateAntiForgeryToken]
-        public async Task<IActionResult> UploadQuestionFile([FromForm] FileUpload fileUpload,[FromServices] IWebHostEnvironment enviroment)
+        [HttpPost, Route("UploadFile"), ValidateAntiForgeryToken]
+        public async Task<IActionResult> UploadQuestionFile([FromForm] FileUpload fileUpload, [FromServices] IWebHostEnvironment enviroment)
         {
-            if (ModelState.IsValid && Path.GetExtension(fileUpload.UploadFile.FileName).Equals(".xls"))
+            if (ModelState.IsValid)
             {
                 var filePath = Path.Combine(enviroment.WebRootPath, "Upload", loginUser.UserName, DateTime.Now.ToString("yyyyMMdd"));
                 if (!Directory.Exists(filePath))
                 {
                     Directory.CreateDirectory(filePath);
                 }
-                var fileName = string.Format("{0}{1}", Path.GetRandomFileName(),Path.GetExtension(fileUpload.UploadFile.FileName));
-                using (FileStream fs = new FileStream(Path.Combine(filePath,fileName),FileMode.Append,FileAccess.Write))
+                var fileName = string.Format("{0}{1}", Guid.NewGuid(), Path.GetExtension(fileUpload.UploadFile.FileName));
+                fileName = Path.Combine(filePath, fileName);
+                using (FileStream fs = new FileStream(fileName, FileMode.Append, FileAccess.Write))
                 {
-                    await fileUpload.UploadFile.CopyToAsync(fs);
+                    fileUpload.UploadFile.CopyTo(fs);
                 }
-                ThreadUtil.RunThread(delegate ()
+                IEnumerable<DataSet> excelData = ReadQuestionFromExcel.ReadExcelFile(fileName);
+                //解析Excel数据
+                foreach (DataSet ds in excelData)
                 {
-                    var excelData = ReadQuestionFromExcel.ReadExcelFile(fileName);
-                });
+                    DataTable excelTable = ds.Tables[0];
+                    if (excelTable == null || excelTable.Rows.Count < 2)
+                    {
+                        continue;
+                    }
+                    DataRow titleRow = excelTable.Rows[0]; //拿到标题行
+                    int columnNum = excelTable.Columns.Count; //得到列数
+                    int questionColumnIndex = 0, answerColumnIndex = 0;
+                    List<int> solutionColumnIndexs = new List<int>();
+                    //得到题目列，答案列，正确答案列的索引
+                    for (int i = 0; i < columnNum; i++)
+                    {
+                        string rowValue = RowUtil.GetString(titleRow, excelTable.Columns[i].ColumnName);
+                        if (rowValue.Equals("题目"))
+                        {
+                            questionColumnIndex = i;
+                        }
+                        if (rowValue.StartsWith("选项"))
+                        {
+                            if (!solutionColumnIndexs.Contains(i))
+                            {
+                                solutionColumnIndexs.Add(i);
+                            }
+                        }
+                        if (rowValue.Equals("答案"))
+                        {
+                            answerColumnIndex = i;
+                        }
+                    }
+                    DataColumn questionColumn = excelTable.Columns[questionColumnIndex];
+                    DataColumn answerColumn = excelTable.Columns[answerColumnIndex];
+                    DataColumn[] solutionColumns = new DataColumn[solutionColumnIndexs.Count];
+                    for (int i = 0; i < solutionColumnIndexs.Count; i++)
+                    {
+                        solutionColumns[i] = excelTable.Columns[solutionColumnIndexs[i]];
+                    }
+                    //生成问题和答案
+                    for (int i = 1; i < excelTable.Rows.Count - 1; i++)
+                    {
+                        DataRow currentRow = excelTable.Rows[i];
+                        //得到题目
+                        string questionName = RowUtil.GetString(currentRow, questionColumn.ColumnName);
+                        if (string.IsNullOrEmpty(questionName))
+                        {
+                            continue;
+                        }
+                        //得到正确答案序号
+                        string answer = RowUtil.GetString(currentRow, answerColumn.ColumnName);
+                        List<string> solutions = new List<string>();
+                        //得到所有答案
+                        foreach (DataColumn column in solutionColumns)
+                        {
+                            string solution = RowUtil.GetString(currentRow, column.ColumnName);
+                            solutions.Add(solution);
+                        }
+                        CreateQuestionInfo questionInfo = new CreateQuestionInfo();
+                        questionInfo.Name = questionName;
+                        questionInfo.QuestionType = QuestionType.Radio;
+                        questionInfo.QuestionTypeInt = (int)questionInfo.QuestionType;
+                        questionInfo.QuestionScore = 1;
+                        questionInfo.QuestionGroupName = fileUpload.UploadFile.FileName.Replace(Path.GetExtension(fileUpload.UploadFile.FileName), null);
+                        questionInfo.SolutionNames = solutions.AsEnumerable();
+                        List<double> solutionScore = new List<double>();
+                        string regexStr = @"^[A-Za-z]+";
+                        //计算选项得分
+                        foreach (string item in questionInfo.SolutionNames)
+                        {
+                            //如果正确答案是A~Z，就判断所有选项的开头，否则判断答案是否包含
+                            if (RegularUtil.Regex(regexStr, answer))
+                            {
+                                if (item.StartsWith(answer)) //选项的开头和答案一致，证明是正确答案
+                                {
+                                    solutionScore.Add(1);
+                                }
+                                else
+                                {
+                                    solutionScore.Add(0);
+                                }
+                            }
+                            else
+                            {
+                                if (item.Contains(answer)) //选项包含答案，就认为是正确答案
+                                {
+                                    solutionScore.Add(1);
+                                }
+                                else
+                                {
+                                    solutionScore.Add(0);
+                                }
+                            }
+                        }
+                        questionInfo.SolutionScore = solutionScore.AsEnumerable();
+                        //去掉选项前边的序号
+                        List<string> solutons1 = new List<string>();
+                        foreach (string solution in solutions)
+                        {
+                            int index = solution.IndexOf('.');
+                            string solutionValue = solution.Substring(index + 1, solution.Length - index - 1);
+                            solutons1.Add(solutionValue);
+                        }
+                        questionInfo.SolutionNames = solutons1.AsEnumerable();
+                        CreateQuestion(questionInfo);
+                    }
+                }
                 return RedirectToAction(nameof(Index));
             }
-            ModelState.AddModelError("UploadFile", "目前只支持Excel文件(.xls)哦");
+            ModelState.AddModelError("UploadFile", "目前只支持Excel文件(.xls/.xlsx)哦");
             return View(fileUpload);
         }
 
@@ -81,21 +188,7 @@ namespace Neko.MVC.Areas.Exam.Controllers
             {
                 try
                 {
-                    QuestionInfo saveInfo = new QuestionInfo();
-                    saveInfo.Name = questionInfo.Name;
-                    saveInfo.QuestionType = (QuestionType)questionInfo.QuestionTypeInt;
-                    saveInfo.QuestionScore = questionInfo.QuestionScore;
-                    List<SolutionInfo> solutions = new List<SolutionInfo>();
-                    for (int i = 0; i < questionInfo.SolutionNames.Count(); i++)
-                    {
-                        SolutionInfo solution = new SolutionInfo();
-                        solution.Name = questionInfo.SolutionNames.ElementAt(i);
-                        solution.Score = questionInfo.SolutionScore.ElementAt(i);
-                        solution.IsCorrect = solution.Score > 0;
-                        solutions.Add(solution);
-                    }
-                    saveInfo.Solutions = solutions;
-                    _questionApp.Save(saveInfo);
+                    CreateQuestion(questionInfo);
                     return RedirectToAction(nameof(Index));
                 }
                 catch (Exception ex)
@@ -105,6 +198,26 @@ namespace Neko.MVC.Areas.Exam.Controllers
             }
             ViewBag.QuestionType = questionInfo.QuestionType;
             return View(questionInfo);
+        }
+
+        private void CreateQuestion(CreateQuestionInfo questionInfo)
+        {
+            QuestionInfo saveInfo = new QuestionInfo();
+            saveInfo.Name = questionInfo.Name;
+            saveInfo.QuestionType = (QuestionType)questionInfo.QuestionTypeInt;
+            saveInfo.QuestionScore = questionInfo.QuestionScore;
+            saveInfo.QuestionGroupName = questionInfo.QuestionGroupName;
+            List<SolutionInfo> solutions = new List<SolutionInfo>();
+            for (int i = 0; i < questionInfo.SolutionNames.Count(); i++)
+            {
+                SolutionInfo solution = new SolutionInfo();
+                solution.Name = questionInfo.SolutionNames.ElementAt(i);
+                solution.Score = questionInfo.SolutionScore.ElementAt(i);
+                solution.IsCorrect = solution.Score > 0;
+                solutions.Add(solution);
+            }
+            saveInfo.Solutions = solutions;
+            _questionApp.Save(saveInfo);
         }
 
         [HttpGet, Route("Edit/{id?}")]
@@ -186,9 +299,17 @@ namespace Neko.MVC.Areas.Exam.Controllers
         }
 
         [HttpGet, Route("GetQuestion")]
-        public JsonResult GetAllQuestion()
+        public JsonResult GetAllQuestion(string nameFilter = null,string groupFilter = null)
         {
             IQueryable<QuestionInfo> questions = _questionApp.Query(p => p.Id > 0);
+            if (!string.IsNullOrEmpty(nameFilter))
+            {
+                questions = questions.Where(p => p.Name.Contains(nameFilter));
+            }
+            if (!string.IsNullOrEmpty(groupFilter))
+            {
+                questions = questions.Where(p => p.QuestionGroupName.Contains(groupFilter));
+            }
             return Json(questions);
         }
     }
