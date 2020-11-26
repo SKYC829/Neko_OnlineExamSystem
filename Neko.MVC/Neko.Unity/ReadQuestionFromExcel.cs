@@ -14,9 +14,9 @@ namespace Neko.Unity
 
         public static IEnumerable<DataSet> ReadExcelFile(string excelPath)
         {
-            _excelConn = string.Format("Provider=Microsoft.Jet.OLEDB.4.0;Data Source={0};Extended Properties=\"Excel 8.0; HDR = No; IMEX = 1\";", excelPath);
-            _excelConnFix = string.Format("Provider=Microsoft.Jet.OLEDB.4.0;Data Source={0};Extended Properties=\"Excel 12.0; HDR = No; IMEX = 1\";", excelPath);
-            OleDbConnection conn = OpenConn(_excelConn);
+            _excelConn = string.Format("Provider=Microsoft.Jet.OLEDB.4.0;Data Source={0};Extended Properties=\"Excel 8.0; HDR = YES; IMEX = 1\";", excelPath);
+            _excelConnFix = string.Format("Provider=Microsoft.ACE.OLEDB.12.0;Data Source={0};Extended Properties=\"Excel 12.0; HDR = YES; IMEX = 1\";", excelPath);
+            OleDbConnection conn = OpenConn(_excelConnFix);
             if(conn == null)
             {
                 throw new Exception("无法读取Excel文件.请检查Excel文件格式是否合法");
@@ -26,7 +26,7 @@ namespace Neko.Unity
             List<string> sheetCache = new List<string>();
             foreach (DataRow sheet in sheets.Rows)
             {
-                string tableName = RowUtil.GetString(sheet, "TABLE_NAME").TrimEnd('_', '$');
+                string tableName = RowUtil.GetString(sheet, "TABLE_NAME").Substring(0, RowUtil.GetString(sheet, "TABLE_NAME").IndexOf('$'));
                 if (sheetCache.Contains(tableName))
                 {
                     continue;

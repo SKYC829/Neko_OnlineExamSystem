@@ -11,7 +11,7 @@
 </div>
 <form asp-area="Exam" asp-controller="ExamPapers" asp-action="Create">
     <div asp-validation-summary="All" class="text-danger"></div>
-    <div class="row">
+    <div class="row" style="max-height:800px">
         <div class="ml-4 mr-3">
             @{ await Html.RenderPartialAsync("_ParticalExamPaperEdit", Model);}
         </div>
