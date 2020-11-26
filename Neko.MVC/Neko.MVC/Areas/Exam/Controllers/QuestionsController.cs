@@ -2,10 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Neko.App.Interfaces.Exam;
 using Neko.App.Models.Exam;
+using Neko.App.Models.System;
 using Util.DataObject;
+using System.IO;
 
 namespace Neko.MVC.Areas.Exam.Controllers
 {
@@ -28,6 +32,33 @@ namespace Neko.MVC.Areas.Exam.Controllers
             ViewBag.PageIndex = pageIndex;
             ViewBag.TotalPage = totalPage;
             return View(questions);
+        }
+
+        [Route("UploadFile")]
+        public IActionResult UploadQuestionFile()
+        {
+            return View();
+        }
+
+        [HttpPost,Route("UploadFile"),ValidateAntiForgeryToken]
+        public IActionResult UploadQuestionFile([FromForm] FileUpload fileUpload,[FromServices] IHostingEnvironment enviroment)
+        {
+            if (ModelState.IsValid && Path.GetExtension(fileUpload.UploadFile.FileName).Equals(".xls"))
+            {
+                var filePath = Path.Combine(enviroment.WebRootPath, "Upload", loginUser.UserName, DateTime.Now.ToString("yyyyMMdd"));
+                if (!Directory.Exists(filePath))
+                {
+                    Directory.CreateDirectory(filePath);
+                }
+                var fileName = string.Format("{0}{1}", Path.GetRandomFileName(),Path.GetExtension(fileUpload.UploadFile.FileName));
+                using (FileStream fs = new FileStream(Path.Combine(filePath,fileName),FileMode.Append,FileAccess.Write))
+                {
+                    fileUpload.UploadFile.CopyTo(fs);
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            ModelState.AddModelError("UploadFile", "目前只支持Excel文件(.xls)哦");
+            return View(fileUpload);
         }
 
         [HttpGet, Route("Create")]

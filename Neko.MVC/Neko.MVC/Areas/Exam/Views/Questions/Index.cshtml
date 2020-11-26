@@ -12,6 +12,7 @@
 
 <p>
     <a id="CreateQuestion" class="btn btn-primary" data-toggle="modal" data-target="#ConfirmQuestionType">新建题目</a>
+    <a class="btn btn-warning" asp-action="UploadFile">通过文件创建</a>
 </p>
 <table class="table text-center">
     <thead>
@@ -67,7 +68,8 @@
     </tfoot>
 </table>
 <!--创建问题前先弹出模态框选择问题类型-->
-@{await Html.RenderPartialAsync("_ParticalCreateQuestionConfirm");
+@{
+    await Html.RenderPartialAsync("_ParticalCreateQuestionConfirm");
 }
 @section Scripts{
     <script src="~/js/deleteConfirm.js"></script>
