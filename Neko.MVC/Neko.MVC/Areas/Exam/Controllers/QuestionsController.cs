@@ -10,6 +10,8 @@ using Neko.App.Models.Exam;
 using Neko.App.Models.System;
 using Util.DataObject;
 using System.IO;
+using Util.Threading;
+using Neko.Unity;
 
 namespace Neko.MVC.Areas.Exam.Controllers
 {
@@ -41,7 +43,7 @@ namespace Neko.MVC.Areas.Exam.Controllers
         }
 
         [HttpPost,Route("UploadFile"),ValidateAntiForgeryToken]
-        public IActionResult UploadQuestionFile([FromForm] FileUpload fileUpload,[FromServices] IHostingEnvironment enviroment)
+        public async Task<IActionResult> UploadQuestionFile([FromForm] FileUpload fileUpload,[FromServices] IWebHostEnvironment enviroment)
         {
             if (ModelState.IsValid && Path.GetExtension(fileUpload.UploadFile.FileName).Equals(".xls"))
             {
@@ -53,8 +55,12 @@ namespace Neko.MVC.Areas.Exam.Controllers
                 var fileName = string.Format("{0}{1}", Path.GetRandomFileName(),Path.GetExtension(fileUpload.UploadFile.FileName));
                 using (FileStream fs = new FileStream(Path.Combine(filePath,fileName),FileMode.Append,FileAccess.Write))
                 {
-                    fileUpload.UploadFile.CopyTo(fs);
+                    await fileUpload.UploadFile.CopyToAsync(fs);
                 }
+                ThreadUtil.RunThread(delegate ()
+                {
+                    var excelData = ReadQuestionFromExcel.ReadExcelFile(fileName);
+                });
                 return RedirectToAction(nameof(Index));
             }
             ModelState.AddModelError("UploadFile", "目前只支持Excel文件(.xls)哦");
