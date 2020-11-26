@@ -36,6 +36,7 @@ namespace Neko.App.Apps.ExamApps
             result.Name = question.QuestionName;
             result.QuestionScore = question.QuestionScore;
             result.QuestionType = (QuestionType)question.QuestionType;
+            result.QuestionGroupName = question.QuestionGroupName;
             result.Solutions = QuerySolutions(question.Solutions);
             return result;
         }
@@ -55,6 +56,7 @@ namespace Neko.App.Apps.ExamApps
                 result.Id = question.Id;
                 result.Name = question.QuestionName;
                 result.QuestionScore = question.QuestionScore;
+                result.QuestionGroupName = question.QuestionGroupName;
                 result.QuestionType = (QuestionType)question.QuestionType;
                 //result.Solutions = QuerySolutions(question.Solutions);
                 results.Add(result);
@@ -160,6 +162,7 @@ namespace Neko.App.Apps.ExamApps
             question.QuestionName = questionInfo.Name;
             question.QuestionScore = questionInfo.QuestionScore;
             question.QuestionType = (DbModel.QuestionType)questionInfo.QuestionType;
+            question.QuestionGroupName = questionInfo.QuestionGroupName;
             question.CreateUserId = _loginUser.Id;
             question.CreateDate = DateTime.Now;
             question = _repository.Save(question);
@@ -277,6 +280,7 @@ namespace Neko.App.Apps.ExamApps
                 result.Name = question.QuestionName;
                 result.QuestionScore = question.QuestionScore;
                 result.QuestionType = (QuestionType)question.QuestionType;
+                result.QuestionGroupName = question.QuestionGroupName;
                 //result.Solutions = QuerySolutions(question.Solutions);
                 results.Add(result);
             }

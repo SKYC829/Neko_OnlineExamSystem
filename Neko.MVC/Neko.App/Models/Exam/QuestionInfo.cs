@@ -19,6 +19,8 @@ namespace Neko.App.Models.Exam
         [Required(ErrorMessage = "请填写一个{0}"),Display(Name = "题目分值",Prompt = "该题总分为多少分")]
         public double QuestionScore { get; set; }
 
+        public string QuestionGroupName { get; set; }
+
         public IEnumerable<SolutionInfo> Solutions { get; set; }
     }
 }
