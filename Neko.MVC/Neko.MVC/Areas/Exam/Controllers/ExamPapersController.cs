@@ -43,7 +43,7 @@ namespace Neko.MVC.Areas.Exam.Controllers
             return View();
         }
 
-        [HttpPost,ValidateAntiForgeryToken]
+        [HttpPost, ValidateAntiForgeryToken, RequestFormLimits(ValueCountLimit = 5000, ValueLengthLimit = 1024 * 1024 * 500)]
         [Route("Create")]
         public IActionResult Create([FromForm] EditExamPaperInfo paperInfo)
         {
