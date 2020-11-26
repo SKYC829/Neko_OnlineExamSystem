@@ -32,7 +32,7 @@ namespace Neko.MVC
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();
+            services.AddControllersWithViews().AddRazorRuntimeCompilation(); ;
             services.AddDbContextPool<NekoDbContext>(op =>
             {
                 op.UseMySQL(_configuration.GetConnectionString("Mysql"));
@@ -105,8 +105,10 @@ namespace Neko.MVC
                 //    name:"identity",
                 //    pattern:"{Identity}/{controller}/{action}/{id?}");
             });
-
-            DbSeed.InitDefaultData(app.ApplicationServices);
+            if (env.IsDevelopment())
+            {
+                DbSeed.InitDefaultData(app.ApplicationServices);
+            }
         }
     }
 }
