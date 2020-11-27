@@ -14,6 +14,7 @@ using Util.Threading;
 using Neko.Unity;
 using System.Data;
 using Util.IO;
+using Microsoft.AspNetCore.StaticFiles;
 
 namespace Neko.MVC.Areas.Exam.Controllers
 {
@@ -96,12 +97,14 @@ namespace Neko.MVC.Areas.Exam.Controllers
                     DataColumn questionColumn = excelTable.Columns[questionColumnIndex];
                     DataColumn answerColumn = excelTable.Columns[answerColumnIndex];
                     DataColumn[] solutionColumns = new DataColumn[solutionColumnIndexs.Count];
+                    //移除标题行
+                    excelTable.Rows.Remove(titleRow);
                     for (int i = 0; i < solutionColumnIndexs.Count; i++)
                     {
                         solutionColumns[i] = excelTable.Columns[solutionColumnIndexs[i]];
                     }
                     //生成问题和答案
-                    for (int i = 1; i < excelTable.Rows.Count - 1; i++)
+                    for (int i = 0; i < excelTable.Rows.Count; i++)
                     {
                         DataRow currentRow = excelTable.Rows[i];
                         //得到题目
@@ -279,7 +282,7 @@ namespace Neko.MVC.Areas.Exam.Controllers
             return View(questionInfo);
         }
 
-        [HttpPost, Route("Delete/{id?}"), ValidateAntiForgeryToken]
+        [HttpPost, Route("Delete/{id?}")]
         public IActionResult QuestionDelete([FromBody] string id)
         {
             try
@@ -311,6 +314,24 @@ namespace Neko.MVC.Areas.Exam.Controllers
                 questions = questions.Where(p => p.QuestionGroupName.Contains(groupFilter));
             }
             return Json(questions);
+        }
+
+        [HttpGet,Route("QuestionFileExample")]
+        public IActionResult DownloadExample([FromServices] IWebHostEnvironment enviroment)
+        {
+            var filePath = Path.Combine(enviroment.WebRootPath, "Examples");
+            if (!Directory.Exists(filePath))
+            {
+                return NotFound("当前没有可以下载的样例文件,请联系管理员获取");
+            }
+            var file = Path.Combine(filePath, "样例文件.xlsx");
+            if (!System.IO.File.Exists(file))
+            {
+                return NotFound("当前没有可以下载的样例文件,请联系管理员获取");
+            }
+            var provider = new FileExtensionContentTypeProvider();
+            var memi = provider.Mappings[Path.GetExtension(file)];
+            return File(System.IO.File.OpenRead(file), memi, Path.GetFileName(file));
         }
     }
 }
