@@ -22,6 +22,8 @@ namespace Neko.App.Models.Exam
 
         public IEnumerable<double> SolutionScore { get; set; }
 
+        public string QuestionGroupName { get; set; }
+
         public double TotalSolutionScore
         {
             get

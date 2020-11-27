@@ -5,20 +5,28 @@
 }
 <div class="modal" id="ImportQuestion" role="dialog" data-url="Create">
     <div class="modal-dialog modal-dialog-centered data-backdrop='static'" role="document">
-        <div class="modal-content">
+        <div class="modal-content" style="min-width:1024px;max-height:800px">
             <div class="modal-header">
                 <h5 class="modal-title">请选择问题</h5>
                 <button type="button" class="close" data-dismiss="modal">
                     <span>&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" style="overflow-y:scroll;">
+                <div>
+                    <label>分组筛选:</label>
+                    <input id="groupFilter" type="text" />
+                    <label>名称筛选:</label>
+                    <input id="nameFilter" type="text" />
+                    <h5 id="queryTip" class="modal-title text-warning" hidden>正在查询,请稍候...</h5>
+                </div>
                 <table id="questionTable" class="table text-center">
                     <thead>
                         <tr>
                             <th><input id="selectAll" type="checkbox" title="全选" /></th>
                             <th>题目</th>
-                            <th>类型</th>
+                            <th style="min-width:150px">分组</th>
+                            <th style="min-width:150px">类型</th>
                         </tr>
                     </thead>
                     <tbody id="questionTableBody">

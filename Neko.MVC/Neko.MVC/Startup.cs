@@ -105,8 +105,10 @@ namespace Neko.MVC
                 //    name:"identity",
                 //    pattern:"{Identity}/{controller}/{action}/{id?}");
             });
-
-            DbSeed.InitDefaultData(app.ApplicationServices);
+            if (env.IsDevelopment())
+            {
+                DbSeed.InitDefaultData(app.ApplicationServices);
+            }
         }
     }
 }

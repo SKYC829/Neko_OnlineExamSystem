@@ -16,6 +16,8 @@ namespace Neko.Domain.Entities
         [Column(name:"Score")]
         public double QuestionScore { get; set; }
 
+        public string QuestionGroupName { get; set; }
+
         /// <summary>
         /// 创建人Id
         /// </summary>

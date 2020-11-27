@@ -1,0 +1,31 @@
+﻿@model Neko.App.Models.System.FileUpload
+
+@{
+    ViewData["Title"] = "通过文件创建题目";
+}
+
+<span class="h1">你可以通过上传符合格式的Excel文件来批量创建题目</span><small><span class="badge badge-pill badge-info">文件后缀名为(.xls;.xlsx)</span></small>
+
+<h4>点击下方选择文件进行选择</h4>
+<small>不了解文件格式?<a asp-action="QuestionFileExample">点击下载样例</a></small>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form role="form" enctype="multipart/form-data" method="post" asp-action="UploadQuestionFile">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="UploadFile"></label>
+                <input type="file" asp-for="UploadFile" />
+            </div>
+            <div class="form-group">
+                <input type="submit" value="批量创建" class="btn btn-primary" />
+                <a class="btn btn-secondary" asp-action="Index">返回</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    
+}
