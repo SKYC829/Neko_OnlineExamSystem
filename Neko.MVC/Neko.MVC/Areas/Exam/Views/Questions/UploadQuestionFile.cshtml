@@ -1,12 +1,13 @@
 ﻿@model Neko.App.Models.System.FileUpload
 
 @{
-    ViewData["Title"] = "UploadQuestionFile";
+    ViewData["Title"] = "通过文件创建题目";
 }
 
-<h1>UploadQuestionFile</h1>
+<span class="h1">你可以通过上传符合格式的Excel文件来批量创建题目</span><small><span class="badge badge-pill badge-info">文件后缀名为(.xls;.xlsx)</span></small>
 
-<h4>FileUpload</h4>
+<h4>点击下方选择文件进行选择</h4>
+<small>不了解文件格式?<a asp-action="QuestionFileExample">点击下载样例</a></small>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -17,14 +18,11 @@
                 <input type="file" asp-for="UploadFile" />
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="批量创建" class="btn btn-primary" />
+                <a class="btn btn-secondary" asp-action="Index">返回</a>
             </div>
         </form>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {
